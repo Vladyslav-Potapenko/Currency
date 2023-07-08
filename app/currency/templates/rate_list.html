@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-{% for rate in rates %}
-    {{ rate }} <br>
-{{% endfor %}}
+{% block title %}
+    Rates
+{% endblock title %}
 
-</body>
-</html>
+{% block content %}
+    {% for rate in rates %}
+        ID: {{ rate.id }}
+        Buy: {{rate.buy}}
+        Sell: {{rate.sell}}
+        Created: {{rate.created}}
+        Currency: {{rate.currency_type}}
+        Source: {{rate.source}}
+        <br>
+    {% endfor %}
+{% endblock content %}

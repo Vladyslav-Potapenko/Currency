@@ -6,15 +6,18 @@ from currency.models import Rate, Contact_us
 
 
 
-# def rate_list(request):
-#     results = []
-#     rates = Rate.objects.all()
-#     for rate in rates:
-#         results.append(
-#             f'{rate.id}'
-#         )
-#     return HttpResponse(str(results))
-
+def rate_list(request):
+    # results = []
+    rates = Rate.objects.all()
+    context = {
+        'rates': rates
+    }
+    # for rate in rates:
+    #     results.append(
+    #         f'{rate.id}'
+    #     )
+    # return HttpResponse(str(results))
+    return render(request, 'rate_list.html', context)
 
 def Contact_us_list(request):
     results = []
@@ -27,9 +30,9 @@ def Contact_us_list(request):
     return HttpResponse(str(results))
 
 
-def rate_list(request):
-    rates = Rate.objects.all()
-    context = {
-        'rates': rates
-    }
-    return render(request, rate_list, context)
+# def rate_list(request):
+#     rates = Rate.objects.all()
+#     context = {
+#         'rates': rates
+#     }
+#     return render(request, rate_list, context)
