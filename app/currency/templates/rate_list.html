@@ -5,12 +5,13 @@
 {% endblock title %}
 
 {% block content %}
+
+    <a href='/rate/create/'>Create</a><br>
     <table>
         <tr>
             <th>ID</th>
             <th>Buy</th>
             <th>Sell</th>
-            <th>Created</th>
             <th>Currency</th>
             <th>Source</th>
         </tr>
@@ -20,9 +21,11 @@
             <td>{{ rate.id }}</td>
             <td>{{ rate.buy }}</td>
             <td>{{ rate.sell }}</td>
-            <td>{{ rate.created }}</td>
-            <td>{{ rate.currency_type }}</td>
+            <td>{{ rate.currency }}</td>
             <td>{{ rate.source }}</td>
+            <td><a href='/rate/update/{{ rate.id }}/'>Edit</a></td>
+            <td><a href='/rate/delete/{{ rate.id }}/'>Delete</a></td>
+            <td><a href='/rate/details/{{ rate.id }}/'>Details</a></td>
         </tr>
         {% endfor %}
     </table>

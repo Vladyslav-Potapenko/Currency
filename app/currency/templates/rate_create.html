@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create rate
+{% endblock title %}
+
+{% block content %}
+    Create rate form
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock content %}
