@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Source Details
+{% endblock title %}
+
+{% block content %}
+        ID: {{ source.id }}
+        Name: {{ source.name }}
+        URL: {{ source.source_url }}
+        Phone {{ source.phone }}
+{% endblock content %}

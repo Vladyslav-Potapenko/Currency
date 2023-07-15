@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Rates
+{% endblock title %}
+
+{% block content %}
+
+    <a href='/source/create/'>Create</a><br>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+
+        {% for source in sources %}
+        <tr>
+            <td>{{ source.id }}</td>
+            <td>{{ source.name }}</td>
+            <td><a href='/source/update/{{ source.id }}/'>Edit</a></td>
+            <td><a href='/source/delete/{{ source.id }}/'>Delete</a></td>
+            <td><a href='/source/details/{{ source.id }}/'>Details</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}
