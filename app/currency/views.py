@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404   # noqa F401
-from django.shortcuts import render, get_object_or_404
-#from django.views.decorators.csrf import csrf_exempt
+# from django.shortcuts import render, get_object_or_404
+# from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
     ListView, CreateView, UpdateView,
     DetailView, DeleteView, TemplateView

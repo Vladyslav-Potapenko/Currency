@@ -1,7 +1,7 @@
 from django.urls import path
 
 
-from currency.views import(
+from currency.views import (
     RateListView,
     RateCreateView,
     RateUpdateView,
