@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Update Contact Us Form
+{% endblock title %}
+
+{% block content %}
+    Update Contact Us Form
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Edit</button>
+    </form>
+
+{% endblock content %}

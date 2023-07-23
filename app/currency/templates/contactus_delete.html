@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete Contact Us Form
+{% endblock title %}
+
+{% block content %}
+    Are you sure you want to delete Form with id: {{ object.id }}?
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock content %}

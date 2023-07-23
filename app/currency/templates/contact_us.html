@@ -5,6 +5,8 @@
 {% endblock title %}
 
 {% block content %}
+
+    <a href="{% url 'currency:contactus-create' %}">Create</a><br>
     <table>
         <tr>
             <th>ID</th>
@@ -13,12 +15,15 @@
             <th>Message</th>
         </tr>
 
-        {% for contact_us in contact_us %}
+        {% for contact_us in object_list %}
         <tr>
             <td>{{ contact_us.id }}</td>
             <td>{{ contact_us.email_from }}</td>
             <td>{{ contact_us.subject }}</td>
             <td>{{ contact_us.message }}</td>
+            <td><a href="{% url 'currency:contactus-update' contact_us.id %}">Edit</a></td>
+            <td><a href="{% url 'currency:contactus-details' contact_us.id %}">Details</a></td>
+            <td><a href="{% url 'currency:contactus-delete' contact_us.id %}">Delete</a></td>
         </tr>
         {% endfor %}
     </table>
