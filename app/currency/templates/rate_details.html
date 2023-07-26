@@ -9,6 +9,6 @@
         <strong>Buy:</strong> {{ rate.buy }}<br>
         <strong>Sell:</strong>{{ rate.sell }}<br>
         <strong>Created:</strong> {{ rate.created }}<br>
-        <strong>Currency:</strong> {{ rate.currency }}<br>
+        <strong>Currency:</strong> {{ rate.get_currency_display }}<br>
         <strong>Source:</strong> {{ rate.source }}
 {% endblock content %}
