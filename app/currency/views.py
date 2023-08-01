@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import send_mail
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404   # noqa F401
 # from django.shortcuts import render, get_object_or_404
 # from django.views.decorators.csrf import csrf_exempt
@@ -80,6 +82,27 @@ class ContactusCreateView(CreateView):
     form_class = ContactusForm
     template_name = 'contactus_create.html'
     success_url = reverse_lazy('currency:contactus')
+
+    def _send_mail(self):
+        recipient = settings.DEFAULT_FROM_EMAIL
+        subject = 'User Contact Us'
+        body = f'''
+                Email to reply: {self.object.email_from}.
+                Subject Subject: {self.object.subject}.
+                Body: {self.object.message}.
+                '''
+        send_mail(
+            subject,
+            body,
+            recipient,
+            [recipient],
+            fail_silently=False
+        )
+
+    def form_valid(self, form):
+        redirect = super().form_valid(form)
+        self._send_mail()
+        return redirect
 
 
 class ContactusUpdateView(UpdateView):
