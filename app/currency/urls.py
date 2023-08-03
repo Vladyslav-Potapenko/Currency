@@ -39,6 +39,4 @@ urlpatterns = [
     path('contactus/update/<int:pk>/', ContactusUpdateView.as_view(), name='contactus-update'),
     path('contactus/details/<int:pk>/', ContactusDetailView.as_view(), name='contactus-details'),
     path('contactus/delete/<int:pk>/', ContactusDeleteView.as_view(), name='contactus-delete'),
-
-
 ]

@@ -17,9 +17,13 @@
         <tr>
             <td>{{ source.id }}</td>
             <td>{{ source.name }}</td>
-            <td><a href="{% url 'currency:source-update' source.id %}">Edit</a></td>
-            <td><a href="{% url 'currency:source-details' source.id %}">Details</a></td>
-            <td><a href="{% url 'currency:source-delete' source.id %}">Delete</a></td>
+            {% if request.user.is_superuser %}
+                <td><a href="{% url 'currency:source-update' source.id %}">Edit</a></td>
+                <td><a href="{% url 'currency:source-details' source.id %}">Details</a></td>
+                <td><a href="{% url 'currency:source-delete' source.id %}">Delete</a></td>
+            {% elif request.user.is_authenticated %}
+                <td><a href="{% url 'currency:source-details' source.id %}">Details</a></td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

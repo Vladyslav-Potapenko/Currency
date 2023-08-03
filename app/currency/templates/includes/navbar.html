@@ -2,4 +2,13 @@
     <a href= "{% url 'currency:rate-list' %}">Rates</a>
     <a href= "{% url 'currency:source-list' %}">Sources</a>
     <a href= "{% url 'currency:contactus-create' %}">Contact us</a>
+
+    {% if request.user.is_authenticated %}
+        Hello {{ request.user.username }}!
+        <a href= "{% url 'profile' %}">Profile</a>
+        <a href= "{% url 'logout' %}">Log out</a>
+    {% else %}
+        <a href="#">Sign Up</a>
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
 </p>
