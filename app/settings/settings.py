@@ -53,6 +53,7 @@ EXTERNAL_APPS = [
 
 INTERNAL_APPS = [
     'currency',
+    'account'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + INTERNAL_APPS
@@ -150,3 +151,8 @@ DEFAULT_FROM_EMAIL = 'potapenkovladyslav@gmail.com'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
+
+AUTH_USER_MODEL = 'account.User'
+
+DOMAIN = '127.0.0.1:8000'
+HTTP_PROTOCOL = 'http'
