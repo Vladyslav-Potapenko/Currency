@@ -1,18 +1,23 @@
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.views import PasswordChangeView
 from django.core.mail import send_mail
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404   # noqa F401
-# from django.shortcuts import render, get_object_or_404
-# from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
     ListView, CreateView, UpdateView,
     DetailView, DeleteView, TemplateView
 )
-
 from django.urls import reverse_lazy
-
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from currency.models import Rate, Contact_us, Source
-
 from currency.forms import RateForm, SourceForm, ContactusForm
+
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class RateListView(ListView):
@@ -26,22 +31,34 @@ class RateCreateView(CreateView):
     success_url = reverse_lazy('currency:rate-list')
 
 
-class RateUpdateView(UpdateView):
+class RateUpdateView(LoginRequiredMixin, SuperuserRequiredMixin, UpdateView):
     model = Rate
     form_class = RateForm
     template_name = 'rate_update.html'
     success_url = reverse_lazy('currency:rate-list')
 
+    def get_queryset(self):
+        queryset = Rate.objects.all()
+        return queryset
 
-class RateDetailView(DetailView):
+
+class RateDetailView(LoginRequiredMixin, DetailView):
     model = Rate
     template_name = 'rate_details.html'
 
+    def get_queryset(self):
+        queryset = Rate.objects.all()
+        return queryset
 
-class RateDeleteView(DeleteView):
+
+class RateDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView):
     model = Rate
     template_name = 'rate_delete.html'
     success_url = reverse_lazy('currency:rate-list')
+
+    def get_queryset(self):
+        queryset = Rate.objects.all()
+        return queryset
 
 
 class SourceListView(ListView):
@@ -55,22 +72,34 @@ class SourceCreateView(CreateView):
     success_url = reverse_lazy('currency:source-list')
 
 
-class SourceUpdateView(UpdateView):
+class SourceUpdateView(LoginRequiredMixin, SuperuserRequiredMixin, UpdateView):
     model = Source
     form_class = SourceForm
     template_name = 'source_update.html'
     success_url = reverse_lazy('currency:source-list')
 
+    def get_queryset(self):
+        queryset = Source.objects.all()
+        return queryset
 
-class SourceDetailView(DetailView):
+
+class SourceDetailView(LoginRequiredMixin, DetailView):
     model = Source
     template_name = 'source_details.html'
 
+    def get_queryset(self):
+        queryset = Source.objects.all()
+        return queryset
 
-class SourceDeleteView(DeleteView):
+
+class SourceDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView):
     model = Source
     template_name = 'source_delete.html'
     success_url = reverse_lazy('currency:source-list')
+
+    def get_queryset(self):
+        queryset = Source.objects.all()
+        return queryset
 
 
 class ContactusListView(ListView):
@@ -105,23 +134,51 @@ class ContactusCreateView(CreateView):
         return redirect
 
 
-class ContactusUpdateView(UpdateView):
+class ContactusUpdateView(LoginRequiredMixin, SuperuserRequiredMixin, UpdateView):
     model = Contact_us
-    form_class = ContactusForm
+    form_class = ContactusForm # noqa F401
     template_name = 'contactus_update.html'
     success_url = reverse_lazy('currency:contactus')
 
 
-class ContactusDetailView(DetailView):
+class ContactusDetailView(LoginRequiredMixin, DetailView):
     model = Contact_us
     template_name = 'contactus_details.html'
 
 
-class ContactusDeleteView(DeleteView):
+class ContactusDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView):
     model = Contact_us
     template_name = 'contactus_delete.html'
     success_url = reverse_lazy('currency:contactus')
 
 
+class ProfileView(LoginRequiredMixin, UpdateView):
+    queryset = get_user_model().objects.all()
+    template_name = 'registration/profile_update.html'
+    success_url = reverse_lazy('index')
+    fields = (
+        'first_name',
+        'last_name'
+    )
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/change_password.html'
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, _('Your password was successfully updated!'))
+        return response
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        messages.error(self.request, _('Please correct the error below.'))
+        return response

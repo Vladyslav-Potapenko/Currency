@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Update profile
+{% endblock title %}
+
+{% block content %}
+    Update profile form
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Edit</button>
+    </form>
+
+    <button class="button-link" onclick="window.location.href='{% url 'change_password' %}'">Change password</button>
+{% endblock content %}
