@@ -42,7 +42,6 @@ class Source(models.Model):
         return self.name
 
 
-
 class RequestResponseLog(models.Model):
     path = models.CharField(max_length=100)
     request_method = models.CharField(max_length=100)
