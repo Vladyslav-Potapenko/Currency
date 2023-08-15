@@ -21,6 +21,7 @@ class SourceForm(forms.ModelForm):
             'name',
             'source_url',
             'phone',
+            'logo'
         )
 
 
