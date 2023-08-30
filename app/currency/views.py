@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.core.mail import send_mail
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404   # noqa F401
 from django.views.generic import (
     ListView, CreateView, UpdateView,
@@ -9,6 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from currency.models import Rate, Contact_us, Source
 from currency.forms import RateForm, SourceForm, ContactusForm
+from currency.tasks import send_email_from_background
 
 
 class SuperuserRequiredMixin(UserPassesTestMixin):
@@ -109,20 +109,14 @@ class ContactusCreateView(CreateView):
     success_url = reverse_lazy('currency:contactus')
 
     def _send_mail(self):
-        recipient = settings.DEFAULT_FROM_EMAIL
+        recipient = settings.DEFAULT_FROM_EMAIL    # noqa F841
         subject = 'User Contact Us'
         body = f'''
                 Email to reply: {self.object.email_from}.
                 Subject Subject: {self.object.subject}.
                 Body: {self.object.message}.
                 '''
-        send_mail(
-            subject,
-            body,
-            recipient,
-            [recipient],
-            fail_silently=False
-        )
+        send_email_from_background.delay(subject, body)
 
     def form_valid(self, form):
         redirect = super().form_valid(form)

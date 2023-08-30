@@ -5,7 +5,9 @@ django-admin-rangefilter
 django-import-export
 django-crispy-forms
 crispy-bootstrap4
-ipython
+pika
+Celery
+requests
 
 
 #flake
