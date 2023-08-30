@@ -1,7 +1,12 @@
 from django.db import models
 from django.core.validators import EmailValidator
 from currency.choices import RateCurrencyChoices
+from django.templatetags.static import static
 from django.utils.translation import gettext_lazy as _
+
+
+def logo_path(instance, filename):
+    return f'logo/source_{instance.id}/{filename}'
 
 
 class Rate(models.Model):
@@ -33,6 +38,20 @@ class Source(models.Model):
     name = models.CharField(_('Name'), max_length=64)
     source_url = models.URLField(_('URL'), max_length=255)
     phone = models.CharField(_('Phone'), max_length=13)
+    logo = models.FileField(
+        _('Logo'),
+        default=None,
+        null=True,
+        blank=True,
+        upload_to=logo_path
+    )
+
+    @property
+    def logo_url(self) -> str:
+        if self.logo:
+            return self.logo.url
+
+        return static('source/6_custom_icons_02.png')
 
     class Meta:
         verbose_name = ('Source')

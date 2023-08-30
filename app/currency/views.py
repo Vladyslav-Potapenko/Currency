@@ -1,7 +1,4 @@
 from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth import get_user_model
-from django.contrib.auth.views import PasswordChangeView
 from django.core.mail import send_mail
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404   # noqa F401
 from django.views.generic import (
@@ -9,7 +6,6 @@ from django.views.generic import (
     DetailView, DeleteView, TemplateView
 )
 from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from currency.models import Rate, Contact_us, Source
 from currency.forms import RateForm, SourceForm, ContactusForm
@@ -152,33 +148,5 @@ class ContactusDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView
     success_url = reverse_lazy('currency:contactus')
 
 
-class ProfileView(LoginRequiredMixin, UpdateView):
-    queryset = get_user_model().objects.all()
-    template_name = 'registration/profile_update.html'
-    success_url = reverse_lazy('index')
-    fields = (
-        'first_name',
-        'last_name'
-    )
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-
 class IndexView(TemplateView):
     template_name = 'index.html'
-
-
-class CustomPasswordChangeView(PasswordChangeView):
-    template_name = 'registration/change_password.html'
-    success_url = reverse_lazy('profile')
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, _('Your password was successfully updated!'))
-        return response
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        messages.error(self.request, _('Please correct the error below.'))
-        return response
