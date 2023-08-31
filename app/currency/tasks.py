@@ -73,7 +73,6 @@ def parse_monobank():
         '978': RateCurrencyChoices.EUR,
     }
 
-
     for rate in rates:
         rateBuy = to_2_places_decimal(rate['rateBuy'])
         rateSell = to_2_places_decimal(rate['rateSell'])
