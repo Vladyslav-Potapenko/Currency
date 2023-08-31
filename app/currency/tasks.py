@@ -70,14 +70,17 @@ def parse_monobank():
 
     available_currencies = {
         '840': RateCurrencyChoices.USD,
-        '978': RateCurrencyChoices.EUR
+        '978': RateCurrencyChoices.EUR,
     }
+
+
     for rate in rates:
         rateBuy = to_2_places_decimal(rate['rateBuy'])
         rateSell = to_2_places_decimal(rate['rateSell'])
         currency_code = str(rate['currencyCodeA'])
+        second_currency = str(rate['currencyCodeB'])
 
-        if currency_code not in available_currencies:
+        if currency_code not in available_currencies or second_currency in available_currencies:
             continue
 
         currency = available_currencies[currency_code]
