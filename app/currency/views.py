@@ -1,14 +1,17 @@
 from django.conf import settings
+from django.urls import reverse_lazy
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404   # noqa F401
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
-    ListView, CreateView, UpdateView,
+    CreateView, UpdateView,
     DetailView, DeleteView, TemplateView
 )
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django_filters.views import FilterView
 from currency.models import Rate, Contact_us, Source
 from currency.forms import RateForm, SourceForm, ContactusForm
 from currency.tasks import send_email_from_background
+
+from app.currency.filters import RateFilter, SourceFilter, ContactusFilter
 
 
 class SuperuserRequiredMixin(UserPassesTestMixin):
@@ -16,9 +19,20 @@ class SuperuserRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_superuser
 
 
-class RateListView(ListView):
+class RateListView(FilterView):
     queryset = Rate.objects.all().select_related('source')
     template_name = 'rate_list.html'
+    paginate_by = 10
+    filterset_class = RateFilter
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['filter_params'] = '&'.join(
+            f'{key}={value}'
+            for key, value in self.request.GET.items()
+            if key != 'page'
+        )
+        return context
 
 
 class RateCreateView(CreateView):
@@ -57,9 +71,20 @@ class RateDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView):
         return queryset
 
 
-class SourceListView(ListView):
+class SourceListView(FilterView):
     queryset = Source.objects.all()
     template_name = 'source_list.html'
+    paginate_by = 10
+    filterset_class = SourceFilter
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['filter_params'] = '&'.join(
+            f'{key}={value}'
+            for key, value in self.request.GET.items()
+            if key != 'page'
+        )
+        return context
 
 
 class SourceCreateView(CreateView):
@@ -98,9 +123,20 @@ class SourceDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView):
         return queryset
 
 
-class ContactusListView(ListView):
+class ContactusListView(FilterView):
     queryset = Contact_us.objects.all()
     template_name = 'contact_us.html'
+    paginate_by = 10
+    filterset_class = ContactusFilter
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['filter_params'] = '&'.join(
+            f'{key}={value}'
+            for key, value in self.request.GET.items()
+            if key != 'page'
+        )
+        return context
 
 
 class ContactusCreateView(CreateView):

@@ -8,6 +8,8 @@ crispy-bootstrap4
 pika
 Celery
 requests
+django_tables2
+django-filter
 
 
 #flake
