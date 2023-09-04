@@ -36,6 +36,7 @@ class Contact_us(models.Model):
 
 class Source(models.Model):
     name = models.CharField(_('Name'), max_length=64)
+    code_name = models.CharField(_('Code Name'), max_length=64, unique=True)
     source_url = models.URLField(_('URL'), max_length=255)
     phone = models.CharField(_('Phone'), max_length=13)
     logo = models.FileField(

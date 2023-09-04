@@ -12,3 +12,10 @@ shell:
 
 createsuperuser:
 	python app/manage.py createsuperuser
+
+worker:
+	python app ; celery -A settings worker -l info -P solo
+
+beat:
+	cd app/ ; celery -A settings beat -l info
+
