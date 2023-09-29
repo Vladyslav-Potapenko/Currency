@@ -8,6 +8,10 @@
 
 {% if request.user.is_superuser or request.user.is_authenticated %}
     <a href="{% url 'currency:rate-create' %}">Create</a><br>
+    <form method = "get" >
+         {{filter.form.as_p}}
+         <button type = "submit">Filter</button >
+    </form >
 {% else %}
 
 {% endif %}
@@ -69,4 +73,6 @@
     {% endfor %}
     </tbody>
 </table>
+
+{% include 'includes/pagination.html' %}
 {% endblock content %}

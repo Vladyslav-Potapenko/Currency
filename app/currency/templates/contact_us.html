@@ -7,6 +7,10 @@
 {% block content %}
 
     <a href="{% url 'currency:contactus-create' %}">Create</a><br>
+    <form method = "get" >
+         {{filter.form.as_p}}
+         <button type = "submit">Filter</button >
+    </form >
     <table>
         <tr>
             <th>ID</th>
@@ -27,4 +31,5 @@
         </tr>
         {% endfor %}
     </table>
+{% include 'includes/pagination.html' %}
 {% endblock content %}

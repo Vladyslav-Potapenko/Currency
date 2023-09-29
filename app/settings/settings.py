@@ -53,7 +53,9 @@ EXTERNAL_APPS = [
     'import_export',
     'storages',
     'crispy_forms',
-    'crispy_bootstrap4'
+    'crispy_bootstrap4',
+    'django_tables2',
+    'django_filters'
 ]
 
 INTERNAL_APPS = [
