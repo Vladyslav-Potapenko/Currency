@@ -10,6 +10,11 @@ Celery
 requests
 django_tables2
 django-filter
+djangorestframework
+djangorestframework-yaml
+djangorestframework-xml
+djangorestframework-simplejwt
+drf-yasg
 
 
 #flake
