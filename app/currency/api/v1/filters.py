@@ -35,4 +35,3 @@ class ContactUsFilter(django_filters.FilterSet):
             'id': ('gt', 'gte', 'lt', 'lte', 'exact'),
             'email_from': ('exact', 'iexact', 'contains', 'icontains'),
         }
-

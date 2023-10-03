@@ -39,7 +39,7 @@ class ContactUsSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super(ContactUsSerializer, self).create(validated_data)
-        recipient = settings.DEFAULT_FROM_EMAIL
+        recipient = settings.DEFAULT_FROM_EMAIL # noqa F841
         subject = 'User Contact Us'
         body = f'''
             Email to reply: {validated_data.get('email_from')}.
